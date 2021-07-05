@@ -250,7 +250,6 @@ public class MapSpawner : MonoBehaviour
         }
         startPositionX += distanceBetweenSquares;
         maximumPositionX += distanceBetweenSquares;
-
     }
     public void MoveTilesDown()
     {
@@ -260,7 +259,6 @@ public class MapSpawner : MonoBehaviour
             {
                 nextPosition = new Vector3(startPositionX - distanceBetweenSquares, 0, el.transform.position.z);
                 LeanTween.move(el, nextPosition, 0.29f).setEase(LeanTweenType.easeInOutCirc);
-
             }
         }
         startPositionX -= distanceBetweenSquares;
