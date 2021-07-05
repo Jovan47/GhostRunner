@@ -6,8 +6,7 @@ public class MapSpawner : MonoBehaviour
 {
     [SerializeField] private List<GameObject> terrains = new List<GameObject>();
     // [SerializeField] private int count;
-    [SerializeField] private float playerJumpDistance = 4;
-    [SerializeField] private int numberOfSquares = 10;
+   // [SerializeField] private float playerJumpDistance = 4;
     [SerializeField] private int distanceBetweenSquares;
     private float maximumPositionX = 36;
     private float startPositionX = 0;
@@ -18,10 +17,6 @@ public class MapSpawner : MonoBehaviour
     public Color secondColor;
     public GameObject obstaclePrefab; //fsdf
     private int numberOfObstacles = 10;
-
-
-
-
     private List<GameObject> listTile;
     private GameObject[,] mapa;
     private int indexListe;
@@ -31,18 +26,14 @@ public class MapSpawner : MonoBehaviour
     private bool down = false;
     private bool up = false;
     private bool moved = false;
-    private int numberOfTiles = 10;
 
     void Start()
     {
-
-
         listTile = new List<GameObject>();
         Vector3 position = new Vector3(0, 0, 0);
         mapa = new GameObject[10, 10];
         indexListe = 0;
 
-        int indexObstacle = 0;
         for (int i = 0; i < 10; i++)
         {
             position.x = 4 * i;
@@ -55,9 +46,6 @@ public class MapSpawner : MonoBehaviour
                 tempObj.transform.parent = gameObject.transform;
                 listTile.Add(tempObj);
                 terrains.Add(tempObj);
-
-                
-
                 /* 
                  if (i == j || (i+j)==10-1)
                  {
@@ -117,9 +105,6 @@ public class MapSpawner : MonoBehaviour
         {
             StartCoroutine(TweenIng());
         }
-
-
-
         StartCoroutine(MakeObstacles());
     }
 
@@ -127,7 +112,7 @@ public class MapSpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(8);
 
-        for(int i=0; i<listTile.Count; i++)
+        for(int i=1; i<listTile.Count; i++)
         {
             if((i*i)%8==0 && numberOfObstacles > 0)
             {

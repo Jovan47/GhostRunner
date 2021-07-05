@@ -64,14 +64,14 @@ public class PlayerMovement : MonoBehaviour
 
         }
         //nextPlace.x <= maxX && nextPlace.x >= 0 && nextPlace.z <= maxZ && nextPlace.z >= 0
-        if (  moved && !isHoping)
+        if (moved && !isHoping)
         {
             Vector3 dirr = new Vector3(0, 0, 0);
-            dirr= ((nextPlace)-nextPlace-new Vector3(0,-1,0)).normalized;
-            Ray ray = new Ray(nextPlace+new Vector3(0,-1,0), dirr * rayReach);
+            dirr = ((nextPlace) - nextPlace - new Vector3(0, -1, 0)).normalized;
+            Ray ray = new Ray(nextPlace + new Vector3(0, -1, 0), dirr * rayReach);
             hits = Physics.RaycastAll(ray);
 
-            Debug.DrawRay(nextPlace,dirr * rayReach, Color.red);
+            Debug.DrawRay(nextPlace, dirr * rayReach, Color.red);
 
             bool isTile = false;
             bool isObst = false;
@@ -82,20 +82,17 @@ public class PlayerMovement : MonoBehaviour
                 {
                     isObst = true;
                 }
-                if(x.transform.tag=="Tile")
+                if (x.transform.tag == "Tile")
                 {
                     isTile = true;
                 }
-                if(isTile && !(isTile && isObst))
+                if (isTile && !(isTile && isObst))
                 {
                     playerMoved = true;
                 }
                 else { playerMoved = false; }
             }
-
-            if (playerMoved) { 
             /*
-
             //Debug.DrawRay(nextPlace+new Vector3(0,2,0), currentDiretcion * rayReach, Color.red);
             if (Physics.Raycast(nextPlace+new Vector3(0, 2, 0), currentDiretcion * rayReach,out hit,Obstacles))
             {
@@ -111,7 +108,6 @@ public class PlayerMovement : MonoBehaviour
                     playerMoved = true;
                 }
                 */
-            }
             if (playerMoved)
             {
                 playerMoved = false;
@@ -122,10 +118,6 @@ public class PlayerMovement : MonoBehaviour
                 scriptRef.MoveTiles(directionMove);
             }
         }
-
-        
-      
-
     }
         public void FinishedHop()
         {
