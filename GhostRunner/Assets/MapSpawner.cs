@@ -16,6 +16,8 @@ public class MapSpawner : MonoBehaviour
     private Vector3 nextPosition = new Vector3(0, 0, 0);
     public GameObject TerrainPrefab;
     public Color secondColor;
+    public GameObject obstaclePrefab; //fsdf
+    private int numberOfObstacles = 10;
 
 
 
@@ -40,7 +42,7 @@ public class MapSpawner : MonoBehaviour
         mapa = new GameObject[10, 10];
         indexListe = 0;
 
-
+        int indexObstacle = 0;
         for (int i = 0; i < 10; i++)
         {
             position.x = 4 * i;
@@ -52,8 +54,9 @@ public class MapSpawner : MonoBehaviour
                 GameObject tempObj = mapa[i, j];
                 tempObj.transform.parent = gameObject.transform;
                 listTile.Add(tempObj);
-
                 terrains.Add(tempObj);
+
+                
 
                 /* 
                  if (i == j || (i+j)==10-1)
@@ -114,8 +117,28 @@ public class MapSpawner : MonoBehaviour
         {
             StartCoroutine(TweenIng());
         }
+
+
+
+        StartCoroutine(MakeObstacles());
     }
 
+    IEnumerator MakeObstacles()
+    {
+        yield return new WaitForSeconds(8);
+
+        for(int i=0; i<listTile.Count; i++)
+        {
+            if((i*i)%8==0 && numberOfObstacles > 0)
+            {
+                GameObject t = Instantiate(obstaclePrefab, listTile[i].transform.position + new Vector3(0, 1, 0), Quaternion.identity);
+                t.transform.parent = listTile[i].transform;
+                numberOfObstacles--;
+            }
+        }
+
+    }
+ 
     IEnumerator TweenIng()
     {
         yield return new WaitForSeconds(3);
