@@ -66,20 +66,31 @@ public class PlayerMovement : MonoBehaviour
         //nextPlace.x <= maxX && nextPlace.x >= 0 && nextPlace.z <= maxZ && nextPlace.z >= 0
         if (  moved && !isHoping)
         {
-            Ray ray = new Ray(nextPlace + new Vector3(0, 2, 0), transform.forward);
+            Vector3 dirr = new Vector3(0, 0, 0);
+            dirr= ((nextPlace)-nextPlace-new Vector3(0,-1,0)).normalized;
+            Ray ray = new Ray(nextPlace+new Vector3(0,-1,0), dirr * rayReach);
             hits = Physics.RaycastAll(ray);
 
+            Debug.DrawRay(nextPlace,dirr * rayReach, Color.red);
+
+            bool isTile = false;
+            bool isObst = false;
             foreach (var x in hits)
             {
+                Debug.Log(x.collider.tag);
                 if (x.transform.tag == "Obstacle")
                 {
-                    playerMoved = false;
+                    isObst = true;
                 }
-                else
+                if(x.transform.tag=="Tile")
+                {
+                    isTile = true;
+                }
+                if(isTile && !(isTile && isObst))
                 {
                     playerMoved = true;
                 }
-
+                else { playerMoved = false; }
             }
 
             if (playerMoved) { 
