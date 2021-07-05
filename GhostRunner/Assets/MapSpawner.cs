@@ -185,6 +185,8 @@ public class MapSpawner : MonoBehaviour
             up = true;
         }
         moved = true;
+
+        Debug.Log(startPositionX +"  "+ maximumPositionX);
     }
 
     public void MoveTilesRight()
@@ -194,7 +196,7 @@ public class MapSpawner : MonoBehaviour
             if (el.transform.position.z == this.maximumPositionZ)
             {
                 nextPosition = new Vector3(el.transform.position.x, 0, startPositionZ - distanceBetweenSquares);
-                LeanTween.move(el, nextPosition, 0.35f).setEase(LeanTweenType.easeInOutCirc);
+                LeanTween.move(el, nextPosition, 0.29f).setEase(LeanTweenType.easeInOutCirc);
             }
         }
         startPositionZ -= distanceBetweenSquares;
@@ -207,7 +209,7 @@ public class MapSpawner : MonoBehaviour
             if (el.transform.position.z == this.startPositionZ)
             {
                 nextPosition = new Vector3(el.transform.position.x, 0, maximumPositionZ + distanceBetweenSquares);
-                LeanTween.move(el, nextPosition, 0.35f).setEase(LeanTweenType.easeInQuint);
+                LeanTween.move(el, nextPosition, 0.29f).setEase(LeanTweenType.easeInQuint);
             }
         }
         startPositionZ += distanceBetweenSquares;
@@ -220,7 +222,7 @@ public class MapSpawner : MonoBehaviour
             if (el.transform.position.x == this.startPositionX)
             {
                 nextPosition = new Vector3(maximumPositionX + distanceBetweenSquares, 0, el.transform.position.z);
-                LeanTween.move(el, nextPosition, 0.35f).setEase(LeanTweenType.easeInOutCirc);
+                LeanTween.move(el, nextPosition, 0.29f).setEase(LeanTweenType.easeInOutCirc);
             }
         }
         startPositionX += distanceBetweenSquares;
@@ -234,7 +236,8 @@ public class MapSpawner : MonoBehaviour
             if (el.transform.position.x == this.maximumPositionX)
             {
                 nextPosition = new Vector3(startPositionX - distanceBetweenSquares, 0, el.transform.position.z);
-                LeanTween.move(el, nextPosition, 0.35f).setEase(LeanTweenType.easeInOutExpo);
+                LeanTween.move(el, nextPosition, 0.29f).setEase(LeanTweenType.easeInOutCirc);
+
             }
         }
         startPositionX -= distanceBetweenSquares;
