@@ -13,12 +13,18 @@ public class EnemyMovement : MonoBehaviour
     private Vector3 up = new Vector3();
     private Vector3 down = new Vector3();
     private Vector3 minPath = new Vector3();
-    private float jumpDistance = 4;
+    private float jumpDistance = 4f;
 
 
     public Transform target;
     private Animator animator;
     private string directionMove;
+
+    private bool goLeft  = false;
+    private bool goRight = false;
+    private bool goUp    = false;
+    private bool goDown  = false;
+
 
     private float timeTick = 0.5f;
     private float timer;
@@ -62,68 +68,81 @@ public class EnemyMovement : MonoBehaviour
         this.right = transform.position + new Vector3(0, 0, -jumpDistance);
         this.up    = transform.position + new Vector3(jumpDistance,  0, 0);
         this.down  = transform.position + new Vector3(-jumpDistance, 0, 0);
+
     }
 
     //return ShortestPath where to jump
-    public string ShortestPath()
+    public void ShortestPath()
     {
         PossibleJumpPlaces();
 
-        float distance =0;
-        float minDistance = 100000;
-        distance= Vector3.Distance(left, transform.position);
-        if (distance < minDistance)
+        float distanceLeft  =   Vector3.Distance(target.position, left);
+        float distanceRight =   Vector3.Distance(target.position, right);
+        float distanceUp    =   Vector3.Distance(target.position, up);
+        float distanceDown  =   Vector3.Distance(target.position, down);
+
+        float minDistance = Mathf.Min(distanceUp, distanceRight, distanceLeft, distanceDown);
+        
+        if (minDistance == distanceLeft)
         {
+            minDistance = distanceLeft;
             minPath = left;
-            return "left";
+            goLeft = true;
+            return;
         }
-        distance = Vector3.Distance(right, transform.position);
-        if (distance > minDistance)
+        if (minDistance == distanceRight)
         {
+            minDistance = distanceRight;
             minPath = right;
-            return "right";
-
+            goRight = true;
+            return;
         }
-        distance = Vector3.Distance(up, transform.position);
-        if (distance > minDistance)
+        if (distanceUp == minDistance)
         {
+            minDistance = distanceUp;
             minPath = up;
-            return "up";
-
+            goUp = true;
+            return;
         }
-        distance = Vector3.Distance(down, transform.position);
-        if (distance > minDistance)
+        if (distanceDown == minDistance)
         {
+            minDistance = distanceDown;
             minPath = down;
-            return "down";
+            goDown = true;
+            return;
         }
-        return null;
+
     }
 
     public void EnemyJump()
     {
-        string dirr = " ";
-        directionMove= ShortestPath();
+        
+       ShortestPath();
+        
 
-        if (dirr == "left")
+        if (goLeft)
         {
+            goLeft = false;
             LeanTween.move(gameObject, left, 0.3f);
-            animator.SetTrigger("hop");
+            animator.SetTrigger("hoped");
         }
-        else if (dirr == "right")
+        else if (goRight)
         {
+            goRight = false;
             LeanTween.move(gameObject, right, 0.3f);
-            animator.SetTrigger("hop");
+            animator.SetTrigger("hoped");
         }
-        else if (dirr == "up") 
+        else if (goUp) 
         {
+            goUp = false;
             LeanTween.move(gameObject, up, 0.3f);
-            animator.SetTrigger("hop");
+            animator.SetTrigger("hoped");
         }
-        else if (dirr == "down")
+        else if (goDown)
         {
+            goDown = false;
             LeanTween.move(gameObject, down, 0.3f);
-            animator.SetTrigger("hop");
+            animator.SetTrigger("hoped");
         }
     }
 
