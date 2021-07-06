@@ -7,7 +7,6 @@ public class EnemyMovement : MonoBehaviour
     private bool moved;
     private bool isHoping;
 
-    //keep updated places around 
     private Vector3 left = new Vector3();
     private Vector3 right = new Vector3();
     private Vector3 up = new Vector3();
@@ -15,6 +14,7 @@ public class EnemyMovement : MonoBehaviour
     private Vector3 minPath = new Vector3();
     private float jumpDistance = 4f;
 
+    private float timerSecond = 0;
 
     public Transform target;
     private Animator animator;
@@ -25,37 +25,34 @@ public class EnemyMovement : MonoBehaviour
     private bool goUp    = false;
     private bool goDown  = false;
 
+    private bool resetALL = false;
+    private bool startALL = false;
+
 
     private float timeTick = 0.5f;
     private float timer;
     void Start()
     {
          moved = false;
-        Vector3 nextPlace = new Vector3(0, 0, 0);
-        Application.targetFrameRate = 70;
-        animator = GetComponent<Animator>();
-        StartTimer();
+         Vector3 nextPlace = new Vector3(0, 0, 0);
+         Application.targetFrameRate = 70;
+         animator = GetComponent<Animator>();
+         StartTimer();
     }
     void Update()
     {
+        timerSecond += Time.deltaTime;
         timer += Time.deltaTime;
-        if(timer>= timeTick)
+
+        if (timerSecond >= 9)
         {
-            timer = 0;
-            EnemyJump();
+
+            if (timer >= timeTick)
+            {
+                timer = 0;
+                EnemyJump();
+            }
         }
-
-
-
-
-
-        /*
-        ShortestPath();
-        if (moved && !isHoping)
-        {
-           
-        }
-       */
     }
     public void FinishedHopEnemy()
     {
@@ -68,21 +65,19 @@ public class EnemyMovement : MonoBehaviour
         this.right = transform.position + new Vector3(0, 0, -jumpDistance);
         this.up    = transform.position + new Vector3(jumpDistance,  0, 0);
         this.down  = transform.position + new Vector3(-jumpDistance, 0, 0);
-
     }
 
     //return ShortestPath where to jump
     public void ShortestPath()
     {
         PossibleJumpPlaces();
-
         float distanceLeft  =   Vector3.Distance(target.position, left);
         float distanceRight =   Vector3.Distance(target.position, right);
         float distanceUp    =   Vector3.Distance(target.position, up);
         float distanceDown  =   Vector3.Distance(target.position, down);
 
         float minDistance = Mathf.Min(distanceUp, distanceRight, distanceLeft, distanceDown);
-        
+
         if (minDistance == distanceLeft)
         {
             minDistance = distanceLeft;
@@ -111,14 +106,16 @@ public class EnemyMovement : MonoBehaviour
             goDown = true;
             return;
         }
-
     }
 
     public void EnemyJump()
     {
-        
        ShortestPath();
-        
+
+        if (gameObject.transform.position == target.position)
+        {
+            return;
+        }
 
         if (goLeft)
         {
@@ -145,8 +142,6 @@ public class EnemyMovement : MonoBehaviour
             animator.SetTrigger("hoped");
         }
     }
-
-
     private void StartTimer()
     {
         timer = 0f;
